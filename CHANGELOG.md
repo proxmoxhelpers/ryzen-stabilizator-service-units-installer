@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+
+- Added attribution to the original [`qrwteyrutiyoup/ryzen-stabilizator`](https://github.com/qrwteyrutiyoup/ryzen-stabilizator) project.
+
 ## 1.0.3
 
 - Added an example screenshot directly after the paste-to-run block to show expected install/status output.

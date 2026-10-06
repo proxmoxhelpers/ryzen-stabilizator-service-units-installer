@@ -2,6 +2,8 @@
 
 Paste-to-run POSIX-shell installer for Proxmox/Debian systems with AMD Family 17h CPUs, especially first-generation Ryzen systems affected by unexplained freezes or idle-related instability. It installs independent systemd controls for Package C6, Core C6, CPU boost, and kernel ASLR, with Package C6 disabled by default as the conservative stability workaround.
 
+Based on the original [`qrwteyrutiyoup/ryzen-stabilizator`](https://github.com/qrwteyrutiyoup/ryzen-stabilizator) project, adapted here into standalone systemd service controls and a paste-to-run installer.
+
 ## Paste-to-run
 
 <!-- BEGIN GENERATED PASTE-TO-RUN -->
