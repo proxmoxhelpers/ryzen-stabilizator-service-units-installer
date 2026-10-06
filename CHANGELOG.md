@@ -1,20 +1,14 @@
 # Changelog
 
-## 1.0.4
+## 1.0.6
 
-- Added attribution to the original [`qrwteyrutiyoup/ryzen-stabilizator`](https://github.com/qrwteyrutiyoup/ryzen-stabilizator) project.
+- `systemctl start ryzen-stabilizator-status` now prints one ready-to-run opposite action for each of the four disable-controls.
+- Enabled/active disable-controls are shown with `systemctl disable --now ...`; inactive controls are shown with `systemctl enable --now ...`.
+- Printed toggle commands omit the optional `.service` suffix.
+- Updated the README status explanation while keeping the quick-start section concise.
 
-## 1.0.3
+## 1.0.5
 
-- Added an example screenshot directly after the paste-to-run block to show expected install/status output.
-- Simplified the top of `README.md` so users get the screenshot and the most important commands immediately.
-- Added a compact “Quick commands” section near the top for status plus enable/disable commands for all four controls.
-- Kept the detailed explanations further down in the README.
-- Preserved `paste-to-run.sh` as the single source of truth for the generated installer block.
-
-## 1.0.2
-
-- Removed `copy.html`.
-- Removed the GitHub Pages workflow.
-- Changed the README to rely on GitHub's native copy button on the generated `bash` code block.
-- Kept `paste-to-run.sh` as the single source of truth for the generated installer block.
+- Removed the optional `.service` suffix from user-facing `systemctl` examples.
+- Grouped all enable commands together and all disable commands together in the quick-command section.
+- Added a one-line clarification that disabling a `*-disable` service restores/re-enables the corresponding feature.
