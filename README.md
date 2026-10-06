@@ -18,20 +18,69 @@ ryzen_stabilizator_status
 
 <!-- END GENERATED PASTE-TO-RUN -->
 
-<img width="1615" height="990" alt="image" src="https://github.com/user-attachments/assets/107b6055-db63-4409-94a4-e26728de35fd" />
+![Example output after pasting and running the installer](assets/paste-output-example.png)
 
+## Quick commands
 
-## What this project is for
+### Show live status
 
-The project is aimed at systems where an AMD Family 17h processor—particularly early Ryzen/Summit Ridge systems—appears stable under ordinary stress testing but experiences silent Linux/Proxmox freezes associated with deep idle behavior. It provides runtime controls that can be applied independently, verified from the actual live hardware/kernel state, made persistent with normal systemd enablement, and reversed without inventing equivalent kernel command-line parameters.
+```sh
+systemctl start ryzen-stabilizator-status
+```
 
-The default call block enables only the Package C6 workaround. Core C6, CPU boost, and ASLR controls are present for controlled troubleshooting and are commented out by default.
+### Enable or restore each control
 
-This is a workaround toolkit, not a guarantee that every Family 17h freeze has the same cause. Disabling ASLR reduces security, and disabling CPU boost reduces peak CPU performance; both are optional diagnostic controls rather than recommended defaults.
+```sh
+# Package C6 (default workaround)
+systemctl enable --now amd-family17h-package-c6-disable.service
+systemctl disable --now amd-family17h-package-c6-disable.service
 
-## Quick status first
+# Core C6
+systemctl enable --now amd-family17h-core-c6-disable.service
+systemctl disable --now amd-family17h-core-c6-disable.service
 
-After installation, check the actual live state with:
+# CPU Boost
+systemctl enable --now cpu-boost-disable.service
+systemctl disable --now cpu-boost-disable.service
+
+# ASLR
+systemctl enable --now kernel-aslr-disable.service
+systemctl disable --now kernel-aslr-disable.service
+```
+
+### Convenience wrappers from the paste-to-run shell session
+
+```sh
+ryzen_stabilizator_status
+
+enable_ryzen_psic_workaround
+disable_ryzen_psic_workaround
+
+disable_ryzen_core_c6
+enable_ryzen_core_c6
+
+disable_ryzen_boost
+enable_ryzen_boost
+
+disable_aslr
+enable_aslr
+```
+
+## What this installs
+
+The installer creates four independent one-shot systemd setting-control services plus one aggregate status service:
+
+- `amd-family17h-package-c6-disable.service`
+- `amd-family17h-core-c6-disable.service`
+- `cpu-boost-disable.service`
+- `kernel-aslr-disable.service`
+- `ryzen-stabilizator-status.service`
+
+Package C6 is the default workaround because it is the most conservative first thing to try for the idle-freeze problem that commonly affects first-generation Ryzen / Family 17h systems.
+
+## Status output
+
+Check actual live state with:
 
 ```sh
 systemctl start ryzen-stabilizator-status
@@ -221,30 +270,3 @@ The script was designed for fresh Proxmox installations where subscription-only 
 ```
 
 Review this behavior before publishing or using the installer on hosts where repository policy is centrally managed.
-
-## Family 17h scope
-
-AMD Family 17h is broader than “Ryzen 1”: it includes multiple Zen-family product ranges. This project calls the MSR services `amd-family17h-*` because the unit guard checks CPU family 23 and because AMD documentation describes the relevant CC6 controls on Family 17h products; that naming should not be read as a claim that every Family 17h CPU needs this workaround.
-
-The Package C6 and Core C6 controls are intentionally not presented as universal C-state MSRs. On non-Family-17h systems, the status service reports the two MSR controls as unsupported and the corresponding setter units fail their `ExecCondition` checks rather than writing unknown MSRs.
-
-## References
-
-- AMD Revision Guide for Family 17h Models 00h–0Fh: https://docs.amd.com/v/u/en-US/55449-PUB-1.21
-- AMD Revision Guide for Family 17h Models 30h–3Fh, including documented CC6-disable bit programming: https://docs.amd.com/v/u/en-US/56323_PUB_1.03_RG_Rome
-- Linux CPUFreq frequency boost documentation: https://www.kernel.org/doc/html/latest/admin-guide/pm/cpufreq.html
-- Linux `randomize_va_space` documentation: https://docs.kernel.org/admin-guide/sysctl/kernel.html#randomize-va-space
-
-## Keeping the README synchronized
-
-`paste-to-run.sh` is the single source of truth. The README `bash` code block is generated from it by:
-
-```sh
-python3 tools/sync_readme.py
-```
-
-For GitHub publication, `.github/workflows/sync-readme.yml` regenerates the README block whenever `paste-to-run.sh` changes. GitHub provides the native copy-to-clipboard control on the rendered code block, so no separate clipboard page or duplicated installer source is required.
-
-## Version
-
-See [`VERSION`](VERSION) and [`CHANGELOG.md`](CHANGELOG.md). This archive is release **1.0.2**.
