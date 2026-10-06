@@ -18,6 +18,9 @@ ryzen_stabilizator_status
 
 <!-- END GENERATED PASTE-TO-RUN -->
 
+<img width="1615" height="990" alt="image" src="https://github.com/user-attachments/assets/107b6055-db63-4409-94a4-e26728de35fd" />
+
+
 ## What this project is for
 
 The project is aimed at systems where an AMD Family 17h processor—particularly early Ryzen/Summit Ridge systems—appears stable under ordinary stress testing but experiences silent Linux/Proxmox freezes associated with deep idle behavior. It provides runtime controls that can be applied independently, verified from the actual live hardware/kernel state, made persistent with normal systemd enablement, and reversed without inventing equivalent kernel command-line parameters.
