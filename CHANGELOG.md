@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2 — 2026-10-06
+
+- Uses GitHub's native copy-to-clipboard control on the generated `bash` installer code block.
+- Removes the `copy.html` clipboard helper and GitHub Pages deployment workflow.
+- Keeps `paste-to-run.sh` as the single source of truth; `tools/sync_readme.py` now only regenerates the README code block.
+
 ## 1.0.1 — 2026-10-06
 
 - Simplifies the README introduction and removes the non-working README bookmarklet.

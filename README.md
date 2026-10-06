@@ -2,10 +2,6 @@
 
 Paste-to-run POSIX-shell installer for Proxmox/Debian systems with AMD Family 17h CPUs, especially first-generation Ryzen systems affected by unexplained freezes or idle-related instability. It installs independent systemd controls for Package C6, Core C6, CPU boost, and kernel ASLR, with Package C6 disabled by default as the conservative stability workaround.
 
-<!-- BEGIN COPY BUTTON -->
-<a href="copy.html"><kbd>📋 Copy paste-to-run.sh</kbd></a>
-<!-- END COPY BUTTON -->
-
 ## Paste-to-run
 
 <!-- BEGIN GENERATED PASTE-TO-RUN -->
@@ -238,14 +234,14 @@ The Package C6 and Core C6 controls are intentionally not presented as universal
 
 ## Keeping the README synchronized
 
-`paste-to-run.sh` is the single source of truth. The clipboard helper fetches it directly, while the README code block is generated from it by:
+`paste-to-run.sh` is the single source of truth. The README `bash` code block is generated from it by:
 
 ```sh
 python3 tools/sync_readme.py
 ```
 
-For GitHub publication, `.github/workflows/sync-readme.yml` regenerates the README block from `paste-to-run.sh` and points the copy button at the repository's GitHub Pages helper. `.github/workflows/pages.yml` publishes `copy.html`; its JavaScript fetches `paste-to-run.sh` only when the button is clicked. Normal maintenance is therefore: edit `paste-to-run.sh`, then push it.
+For GitHub publication, `.github/workflows/sync-readme.yml` regenerates the README block whenever `paste-to-run.sh` changes. GitHub provides the native copy-to-clipboard control on the rendered code block, so no separate clipboard page or duplicated installer source is required.
 
 ## Version
 
-See [`VERSION`](VERSION) and [`CHANGELOG.md`](CHANGELOG.md). This archive is release **1.0.1**.
+See [`VERSION`](VERSION) and [`CHANGELOG.md`](CHANGELOG.md). This archive is release **1.0.2**.
