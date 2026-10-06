@@ -3,38 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ryzen-stabilizator-service-units-installer — Copy paste-to-run script</title>
+<title>Copy paste-to-run.sh</title>
 <style>
-body{font:16px/1.5 system-ui,sans-serif;max-width:760px;margin:3rem auto;padding:0 1rem}button,a.bookmarklet{display:inline-block;padding:.8rem 1.1rem;border:1px solid #777;border-radius:.5rem;background:#111;color:#fff;text-decoration:none;cursor:pointer}pre{white-space:pre-wrap;word-break:break-word;background:#f4f4f4;padding:1rem;border-radius:.5rem}small{color:#555}
+body{font:16px/1.5 system-ui,sans-serif;max-width:720px;margin:4rem auto;padding:0 1rem}button{font:inherit;font-weight:700;padding:.85rem 1.15rem;border:1px solid #666;border-radius:.55rem;background:#111;color:#fff;cursor:pointer}button:disabled{opacity:.6;cursor:default}#status{margin-top:1rem;color:#444}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 </style>
 </head>
 <body>
 <h1>ryzen-stabilizator-service-units-installer</h1>
-<p>This page always reads <code>paste-to-run.sh</code> at click time, so the script remains the single source of truth.</p>
-<p><button id="copy">📋 Copy paste-to-run.sh</button></p>
-<p><a id="bookmarklet" class="bookmarklet" href="#">📌 Drag this bookmarklet to your bookmarks bar</a></p>
-<p><small>The bookmarklet copies <code>paste-to-run.sh</code> from this published project. On GitHub repository pages it derives the raw URL automatically and uses the repository default <code>HEAD</code> when no branch is present in the URL.</small></p>
-<pre id="status">Ready.</pre>
+<p><button id="copy" type="button">📋 Copy paste-to-run.sh</button></p>
+<p id="status">Loads <code>paste-to-run.sh</code> when clicked.</p>
 <script>
-const scriptName='paste-to-run.sh';
-async function scriptURL(){
-  if(location.hostname==='github.com'){
-    const m=location.pathname.match(/^\/([^/]+)\/([^/]+)(?:\/(?:blob|tree)\/([^/]+))?/);
-    if(m) return `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]||'HEAD'}/${scriptName}`;
-  }
-  return new URL(scriptName, location.href).href;
-}
-async function copyScript(){
-  const u=await scriptURL();
-  const r=await fetch(u+(u.includes('?')?'&':'?')+'cache_bust='+Date.now());
-  if(!r.ok) throw new Error(`HTTP ${r.status} while loading ${u}`);
-  const t=await r.text();
-  await navigator.clipboard.writeText(t);
-  return t.length;
-}
-document.getElementById('copy').onclick=async()=>{const s=document.getElementById('status');try{const n=await copyScript();s.textContent=`Copied ${n} characters from ${scriptName}.`;}catch(e){s.textContent='Copy failed: '+e.message;}};
-const bookmarklet=`javascript:(async()=>{try{let n='${scriptName}',m=location.pathname.match(/^\\/([^/]+)\\/([^/]+)(?:\\/(?:blob|tree)\\/([^/]+))?/),u=location.hostname==='github.com'&&m?'https://raw.githubusercontent.com/'+m[1]+'/'+m[2]+'/'+(m[3]||'HEAD')+'/'+n:new URL(n,location.href).href,r=await fetch(u+(u.includes('?')?'&':'?')+'cache_bust='+Date.now()),t=await r.text();if(!r.ok)throw Error('HTTP '+r.status);await navigator.clipboard.writeText(t);alert('Copied '+n)}catch(e){alert('Copy failed: '+e.message)}})();`;
-document.getElementById('bookmarklet').href=bookmarklet;
+const button=document.getElementById('copy');
+const status=document.getElementById('status');
+async function copyText(text){if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return;}const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();if(!document.execCommand('copy'))throw new Error('Clipboard access was denied');ta.remove();}
+button.addEventListener('click',async()=>{button.disabled=true;status.textContent='Loading paste-to-run.sh…';try{const url=new URL('paste-to-run.sh',location.href);url.searchParams.set('cache_bust',Date.now());const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);const text=await response.text();await copyText(text);status.textContent=`Copied paste-to-run.sh (${text.length} characters).`;}catch(error){status.textContent=`Copy failed: ${error.message}`;}finally{button.disabled=false;}});
 </script>
 </body>
 </html>
